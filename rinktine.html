@@ -1,0 +1,179 @@
+<!doctype html><html lang="lt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rinktinės reitingai</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: newspaper sports-stats desk
+   IDEA a match-day programme stat sheet in Lithuanian tricolour
+   PICTURE dumbbell rows: DRtg dot to ORtg dot per player, sorted by net rating
+   COLOUR white ground, near-black ink, green #006a44 (offence), red #c1272d (defence), yellow #fdb913 band
+   TYPE Schibsted Grotesk 700 + 400
+   LAYOUT title band, dumbbell chart full width, then ruled table; phone stacks */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0f1412);--ink:light-dark(#141414,#ecefed);--mut:light-dark(#5c605e,#a3aaa6);--rule:light-dark(#dcdfdd,#2a302d);--g:light-dark(#006a44,#3fc58f);--r:light-dark(#c1272d,#ff6b6b);--y:#fdb913;--pan:light-dark(#f4f6f5,#161c19)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 "Schibsted Grotesk",system-ui,sans-serif;overflow-x:clip;margin:0}
+.band{padding-block:clamp(22px,3.5vw,48px);padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+.in{max-width:1180px;margin:0 auto}
+.flag{height:8px;background:linear-gradient(var(--y) 0 33.3%,#006a44 33.3% 66.6%,#c1272d 66.6%)}
+h1{font-size:clamp(30px,4.4vw,46px);line-height:1.05;letter-spacing:-.02em;margin:0 0 10px;font-weight:700}
+.lead{font-size:17px;max-width:70ch;margin:0;color:var(--ink)}
+.meta{color:var(--mut);font-size:14px;margin-top:8px}
+.leg{display:flex;flex-wrap:wrap;gap:18px;font-size:14px;color:var(--mut);margin:18px 0 6px}
+.leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.chart{border-top:2px solid var(--ink)}
+.row{display:grid;grid-template-columns:minmax(120px,210px) minmax(0,1fr) 64px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule)}
+.nm{font-weight:600;font-size:15px;line-height:1.2}
+.nm small{display:block;font-weight:400;color:var(--mut);font-size:13px}
+.trk{position:relative;height:28px}
+.trk .ln{position:absolute;top:13px;height:3px;border-radius:2px}
+.trk .d{position:absolute;top:7px;width:15px;height:15px;border-radius:50%;margin-left:-7.5px;border:2px solid var(--bg)}
+.trk .lg{position:absolute;top:2px;bottom:2px;width:0;border-left:1px dashed var(--mut);opacity:.7}
+.trk .v{position:absolute;top:-1px;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap;transform:translateX(-50%);display:none}
+.net{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;font-size:17px}
+.axis{display:grid;grid-template-columns:minmax(120px,210px) minmax(0,1fr) 64px;gap:12px;font-size:13px;color:var(--mut)}
+.axis .t{position:relative;height:18px}
+.axis .t span{position:absolute;transform:translateX(-50%)}
+.small{opacity:.55}
+h2{font-size:24px;letter-spacing:-.01em;margin:0 0 12px;line-height:1.15}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th{font-weight:600;text-align:right;color:var(--mut);font-size:13px;padding:8px 8px;border-bottom:2px solid var(--ink);white-space:nowrap}
+td{padding:8px 8px;border-bottom:1px solid var(--rule);text-align:right;white-space:nowrap}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+td.p{font-weight:600}
+.row.gabr{background:color-mix(in srgb,var(--y) 22%,transparent)}
+tr.gab td{background:color-mix(in srgb,var(--y) 22%,transparent)}
+td.top{font-weight:700;color:var(--g)}
+td.o{color:var(--g);font-weight:700}td.dd{color:var(--r);font-weight:700}
+tr.grp td{background:var(--pan);font-weight:700;text-align:left;color:var(--ink)}
+.pos{color:var(--g)}.neg{color:var(--r)}
+.na{color:var(--mut)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;font-size:15px;color:var(--ink)}
+.notes p{margin:0 0 10px}
+.notes b{font-weight:600}
+a{color:inherit}
+@media(min-width:700px){.trk .v{display:block}.trk{height:34px}.trk .ln{top:20px}.trk .d{top:14px}}
+@media(max-width:600px){.row,.axis{grid-template-columns:96px minmax(0,1fr) 46px;gap:8px}.nm{font-size:14px}.net{font-size:15px}table{font-size:13px}th,td{padding:6px 5px}}
+</style>
+</head><body>
+<nav class="tabs-x" style="display:flex;gap:6px;flex-wrap:wrap;padding:10px max(5vw,16px);border-bottom:1px solid var(--rule);font-size:14px"><a href="index.html" style="color:var(--ink);text-decoration:none;padding:4px 12px;border:1px solid var(--rule);border-radius:999px">Gabo statistika</a><span style="padding:4px 12px;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:600">Rinktinės reitingai</span></nav>
+
+<div class="flag"></div>
+<div class="band"><div class="in">
+<h1>Lietuva–Serbija: dvylikos žaidėjų ORtg ir DRtg</h1>
+<p class="lead">2026-27 klubų sezono reitingai (taškai per 100 valdymų). Geriausias santykis: Blaževičius ir Birutis. Maldūnas LKL +6,4, Europos taurėje puolimas silpnas, bet gynyba viena geriausių komandoje (žr. „Gynyba“).</p>
+<div class="meta">Rungtynės 2026-11-26, 18:30. Duomenys iki 2026-11-25. Skaičiuota pagal Dean Oliver formulę.</div>
+<div class="leg"><span><i style="background:var(--g)"></i>ORtg (puolimas, daugiau = geriau)</span><span><i style="background:var(--r)"></i>DRtg (gynyba, mažiau = geriau)</span><span><i style="border:1px dashed var(--mut);border-radius:0;width:0;height:12px"></i>lygos vidurkis</span><span>Skirtumas = ORtg − DRtg</span></div>
+<div class="chart" id="chart"></div>
+<div class="axis" id="axis"></div>
+</div></div>
+
+<div class="band" style="padding-top:8px"><div class="in">
+<h2>Pilna lentelė</h2>
+<div class="scroll"><table id="tbl"></table></div>
+</div></div>
+
+<div class="band" style="padding-top:8px"><div class="in">
+<h2>Gynyba: Maldūnas tarp geriausių</h2>
+<p class="lead" style="margin-bottom:14px">Surikiuota pagal DRtg skirtumą nuo savo lygos vidurkio (mažiau = geriau). Europos taurėje Gabas yra 4-as (−8,2), daugiausiai perima (STL% 4,1, 1-as) ir 2-as pagal gynybinius atkovotus kamuolius (DRB% 20,3). Jo DRtg 108,4, o visos Lietkabelio komandos 115,1. Paryškinti trys geriausi kiekviename stulpelyje.</p>
+<div class="scroll"><table id="def"></table></div>
+<p class="meta">STL%: kiek varžovų valdymų baigiasi jo perėmimu. DRB%: kiek galimų gynybinių kamuolių jis atkovoja, kai yra aikštėje.</p>
+</div></div>
+
+<div class="band" style="padding-top:8px"><div class="in">
+<h2>2025-26: Maldūnas pirmas</h2>
+<p class="lead" style="margin-bottom:14px">Praėjęs sezonas, 8 žaidėjai, kuriems yra pilni duomenys. Gabo skirtumas +17,0 yra geriausias, o jo DRtg 112,1 mažiausias iš visų.</p>
+<div class="chart" id="chart26"></div>
+<div class="axis" id="axis26"></div>
+<h2 style="margin-top:36px">Dviejų sezonų suma</h2>
+<p class="lead" style="margin-bottom:14px">2025-26 ir 2026-27 kartu, visos lygos, svertinis vidurkis pagal minutes. Gabas 3-ias pagal skirtumą ir 2-as pagal DRtg.</p>
+<div class="scroll"><table id="sum"></table></div>
+</div></div>
+
+<div class="band" style="background:var(--pan)"><div class="in notes">
+<div>
+<h2>Kaip skaičiuota</h2>
+<p><b>ORtg</b>: taškai, kuriuos žaidėjas sukuria per 100 savo valdymų. <b>DRtg</b>: taškai, kuriuos varžovai pelno per 100 valdymų, kai jis aikštėje (įvertis). Abu pagal Dean Oliver formulę, kaip Basketball-Reference.</p>
+<p>Viešai paruoštų reitingų nėra (RealGM, kuris juos skelbia, nepasiekiamas). Todėl skaičiuota iš žaidėjo, komandos ir varžovų suminės statistikos.</p>
+<p><b>USG%</b>: kiek komandos atakų užbaigia žaidėjas. <b>TS%</b>: tikrasis metimų taiklumas.</p>
+</div>
+<div>
+<h2>Patikimumas</h2>
+<p><b>LKL (≈)</b>: basketnews.com neskelbia varžovų statistikos. Varžovų taškai paimti iš turnyro lentelės (taškų skirtumo), kiti varžovų rodikliai prilyginti komandos. DRtg čia apytikslis.</p>
+<p><b>Maldūnas LKL (≈)</b>: komandos rodikliai iš basketnews.com (6 rungt. vidurkiai), Gabo eilutė 8 rungt.</p>
+<p><b>Maža imtis</b>: mažiau nei 150 min. Žalgirio trijulės Eurolygos eilutės (27–49 min.) parodytos pilkai ir labai triukšmingos.</p>
+<p><b>Lygų vidurkiai</b> apytiksliai: vidutiniai komandų taškai padalinti iš tempo pagal surinktas komandas.</p>
+<p>2025-26 Ryto žaidėjams ir Sargiūnui (tada Rytas, LKL ir BCL) šaltinių su pilna statistika nerasta.</p>
+<p class="meta">Šaltiniai: <a href="https://www.basketball-reference.com/international/">Basketball-Reference international</a>, <a href="https://basketnews.com/teams/703-rytas-vilnius/players.html">basketnews.com</a>, sudėtis: <a href="https://www.lrt.lt/naujienos/sportas/10/3125474/paskelbtas-lietuvos-rinktines-dvyliktukas-rungtynems-su-serbija">LRT</a>.</p>
+</div>
+</div></div>
+
+<script>
+{
+const LG={"LKL":117.0,"Eurolyga":117.7,"Europos taurė":116.6,"ACB":123.4,"Italija LBA":115.8,"Eurolyga 25-26":118.9,"Turkija BSL 25-26":114.9,"Italija LBA 25-26":110.3,"ACB 25-26":112.1,"Europos taurė 25-26":110.9};
+// [name, club, comp, G, MPG, ORtg, DRtg, USG, TS, approx]
+const CUR=[
+["Marekas Blaževičius","Žalgiris","LKL",10,17.0,140.0,100.9,23.7,76.4,1],
+["Laurynas Birutis","Zaragoza","ACB",9,21.7,144.9,115.9,22.0,71.0,0],
+["Gytis Masiulis","Rytas","LKL",11,18.1,124.7,111.0,22.4,58.0,1],
+["Augustas Marčiulionis","Rytas","LKL",11,21.2,124.1,114.6,27.8,61.8,1],
+["Dovydas Giedraitis","Žalgiris","LKL",10,17.6,121.6,112.1,15.5,55.9,1],
+["Deividas Sirvydis","Žalgiris","LKL",9,19.2,116.0,107.0,22.0,61.2,1],
+["Ignas Brazdeikis","Unicaja","ACB",9,18.3,118.9,110.9,20.5,49.2,0],
+["Gabrielius Maldūnas","Lietkabelis","LKL",8,20.6,118.9,112.5,15.9,59.0,1],
+["Gytis Radzevičius","Rytas","LKL",11,27.5,116.1,113.6,18.1,56.5,1],
+["Ignas Sargiūnas","Fenerbahçe","Eurolyga",10,13.1,112.0,114.0,14.6,58.0,0],
+["Osvaldas Olisevičius","Cantù","Italija LBA",6,29.7,114.6,122.7,22.6,61.5,0],
+["Margiris Normantas","Bilbao","ACB",8,23.1,106.4,119.4,23.0,54.7,0],
+["Gabrielius Maldūnas","Lietkabelis","Europos taurė",8,20.4,92.8,108.4,14.6,47.7,0]];
+const EXTRA=[
+["Marekas Blaževičius","Žalgiris","Eurolyga",6,8.2,78.6,111.8,21.2,41.2,0],
+["Deividas Sirvydis","Žalgiris","Eurolyga",3,9.0,108.8,119.8,22.0,88.9,0],
+["Dovydas Giedraitis","Žalgiris","Eurolyga",5,7.8,47.0,121.9,12.9,14.3,0]];
+const PREV={
+"Laurynas Birutis":["Žalgiris","Eurolyga",41,10.0,128.4,115.2],
+"Ignas Brazdeikis":["Žalgiris","Eurolyga",38,14.8,102.2,119.5],
+"Dovydas Giedraitis":["Žalgiris","Eurolyga",20,12.4,106.2,119.1],
+"Deividas Sirvydis":["Žalgiris","Eurolyga",27,12.3,106.8,117.9],
+"Marekas Blaževičius":["Tofaş","Turkija BSL",28,26.1,124.9,112.8],
+"Osvaldas Olisevičius":["Treviso","Italija LBA",15,27.5,103.2,115.4],
+"Margiris Normantas":["Bilbao","ACB",34,20.1,99.7,114.2],
+"Gabrielius Maldūnas":["Lietkabelis","Europos taurė",18,16.8,129.1,112.1]};
+const DEF={"Marekas Blaževičius|LKL":[2.6,17.8,3.5],"Laurynas Birutis|ACB":[1.1,21.9,1.8],"Gytis Masiulis|LKL":[1.6,16.3,3.2],"Augustas Marčiulionis|LKL":[1.8,11.1,1.7],"Dovydas Giedraitis|LKL":[0.9,5.7,0.7],"Deividas Sirvydis|LKL":[2.2,11.0,1.6],"Ignas Brazdeikis|ACB":[3.0,13.7,2.7],"Gabrielius Maldūnas|LKL":[2.1,17.6,2.2],"Gytis Radzevičius|LKL":[1.4,18.6,1.2],"Ignas Sargiūnas|Eurolyga":[0.8,6.4,0.6],"Osvaldas Olisevičius|Italija LBA":[1.5,6.9,1.6],"Margiris Normantas|ACB":[1.7,5.2,1.3],"Gabrielius Maldūnas|Europos taurė":[4.1,20.3,3.4]};
+const LO=88,HI=150,pct=v=>Math.max(0,Math.min(100,(v-LO)/(HI-LO)*100));
+const sgn=x=>(x>0?"+":"")+x.toFixed(1);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rowHtml=(p,cls)=>{const [n,c,comp,G,mpg,o,d]=p,net=o-d,a=pct(Math.min(o,d)),b=pct(Math.max(o,d)),col=net>=0?"var(--g)":"var(--r)";
+return `<div class="row ${cls||""}"><div class="nm">${esc(n)}<small>${esc(c)} · ${esc(comp)}${p[9]?" ≈":""}</small></div>
+<div class="trk"><div class="lg" style="left:${pct(LG[comp])}%"></div><div class="ln" style="left:${a}%;width:${b-a}%;background:${col};opacity:.35"></div>
+<div class="d" style="left:${pct(d)}%;background:var(--r)"></div><div class="d" style="left:${pct(o)}%;background:var(--g)"></div>
+<span class="v" style="left:${pct(d)}%;color:var(--r);${o<d?"margin-left:16px":"margin-left:-16px"}">${d.toFixed(0)}</span><span class="v" style="left:${pct(o)}%;color:var(--g);${o<d?"margin-left:-16px":"margin-left:16px"}">${o.toFixed(0)}</span></div>
+<div class="net ${net>=0?"pos":"neg"}">${sgn(net)}</div></div>`};
+document.getElementById("chart").innerHTML=CUR.map(p=>rowHtml(p)).join("")+EXTRA.map(p=>rowHtml(p,"small")).join("");
+document.getElementById("axis").innerHTML=`<div></div><div class="t">${[90,100,110,120,130,140,150].map(t=>`<span style="left:${pct(t)}%">${t}</span>`).join("")}</div><div></div>`;
+const head=`<thead><tr><th>Žaidėjas</th><th>Klubas, lyga</th><th>Rungt.</th><th>Min./r.</th><th>ORtg</th><th>DRtg</th><th>Skirt.</th><th>Lygos vid.</th><th>USG%</th><th>TS%</th><th>ORtg 25-26</th><th>DRtg 25-26</th><th>25-26 klubas</th></tr></thead>`;
+const body=CUR.map(p=>{const [n,c,comp,G,mpg,o,d,u,ts,ap]=p,pv=PREV[n];
+const prev=pv?`<td class="o">${pv[4].toFixed(1)}</td><td class="dd">${pv[5].toFixed(1)}</td><td style="text-align:left">${esc(pv[0])}, ${esc(pv[1])} (${pv[2]} r., ${pv[3]} min.)</td>`:`<td class="na">n/d</td><td class="na">n/d</td><td class="na" style="text-align:left">nėra duomenų</td>`;
+return `<tr><td class="p">${esc(n)}</td><td>${esc(c)}, ${esc(comp)}${ap?" ≈":""}</td><td>${G}</td><td>${mpg.toFixed(1)}</td><td class="o">${o.toFixed(1)}</td><td class="dd">${d.toFixed(1)}</td><td class="${o-d>=0?"pos":"neg"}">${sgn(o-d)}</td><td>${LG[comp].toFixed(1)}</td><td>${u.toFixed(1)}</td><td>${ts.toFixed(1)}</td>${prev}</tr>`}).join("");
+const ext=`<tr class="grp"><td colspan="13">Žalgirio trijulė Eurolygoje 2026-27 (maža imtis)</td></tr>`+EXTRA.map(p=>{const [n,c,comp,G,mpg,o,d,u,ts]=p;return `<tr class="small"><td class="p">${esc(n)}</td><td>${esc(c)}, ${esc(comp)}</td><td>${G}</td><td>${mpg.toFixed(1)}</td><td class="o">${o.toFixed(1)}</td><td class="dd">${d.toFixed(1)}</td><td class="${o-d>=0?"pos":"neg"}">${sgn(o-d)}</td><td>${LG[comp].toFixed(1)}</td><td>${u.toFixed(1)}</td><td>${ts.toFixed(1)}</td><td></td><td></td><td></td></tr>`}).join("");
+const lg=`<tr class="grp"><td colspan="13">2025-26 lygų vidurkiai (≈): Eurolyga 118.9 · Europos taurė 110.9 · ACB 112.1 · BSL 114.9 · LBA 110.3</td></tr>`;
+document.getElementById("tbl").innerHTML=head+"<tbody>"+body+ext+lg+"</tbody>";
+const P26=Object.entries(PREV).map(([n,v])=>[n,v[0],v[1]+" 25-26",v[2],v[3],v[4],v[5]]).sort((a,b)=>(b[5]-b[6])-(a[5]-a[6]));
+document.getElementById("chart26").innerHTML=P26.map(p=>rowHtml(p,p[0].startsWith("Gabrielius")?"gabr":"")).join("");
+document.getElementById("axis26").innerHTML=document.getElementById("axis").innerHTML;
+// name, minutes 26-27, minutes 25-26, ORtg, DRtg (minutes-weighted, all competitions)
+const SUM=[["Laurynas Birutis",195,409,133.7,115.4],["Marekas Blaževičius",219,730,125.2,110.6],["Gabrielius Maldūnas",328,303,117.1,111.2],["Deividas Sirvydis",200,331,109.9,114.4],["Dovydas Giedraitis",215,249,107.1,116.7],["Osvaldas Olisevičius",178,412,106.6,117.6],["Ignas Brazdeikis",165,562,106.0,117.5],["Margiris Normantas",185,683,101.1,115.3]];
+const dR=SUM.map(r=>r[4]).sort((a,b)=>a-b);
+document.getElementById("sum").innerHTML=`<thead><tr><th>#</th><th>Žaidėjas</th><th>Min. 26-27</th><th>Min. 25-26</th><th>ORtg</th><th>DRtg</th><th>DRtg vieta</th><th>Skirt.</th></tr></thead><tbody>`+SUM.map((r,i)=>`<tr${r[0].startsWith("Gabrielius")?' class="gab"':''}><td>${i+1}</td><td class="p" style="text-align:left">${esc(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td><td class="o">${r[3].toFixed(1)}</td><td class="dd">${r[4].toFixed(1)}</td><td>${dR.indexOf(r[4])+1}</td><td class="${r[3]-r[4]>=0?"pos":"neg"}">${sgn(r[3]-r[4])}</td></tr>`).join("")+"</tbody>";
+const D=CUR.map(p=>{const k=p[0]+"|"+p[2],x=DEF[k];return {n:p[0],c:p[1],comp:p[2],ap:p[9],d:p[6],lg:LG[p[2]],rel:p[6]-LG[p[2]],stl:x[0],drb:x[1],s40:x[2]}});
+const rk=(key,asc)=>{const v=D.map(r=>r[key]).sort((a,b)=>asc?a-b:b-a);return r=>v.indexOf(r[key])+1};
+const rRel=rk("rel",true),rStl=rk("stl",false),rDrb=rk("drb",false),rS=rk("s40",false);
+D.sort((a,b)=>a.rel-b.rel);
+const top=(r,f)=>f(r)<=3?' class="top"':'';
+document.getElementById("def").innerHTML=`<thead><tr><th>#</th><th>Žaidėjas, lyga</th><th>DRtg</th><th>Lygos vid.</th><th>Skirt.</th><th>STL%</th><th>DRB%</th><th>Perėm.+blok./40</th></tr></thead><tbody>`+D.map((r,i)=>`<tr${r.n.startsWith("Gabrielius")?' class="gab"':''}><td>${i+1}</td><td style="text-align:left"><b>${esc(r.n)}</b> <span class="na">${esc(r.comp)}${r.ap?" ≈":""}</span></td><td class="dd">${r.d.toFixed(1)}</td><td>${r.lg.toFixed(1)}</td><td class="${r.rel<=0?"pos":"neg"}">${sgn(r.rel)}</td><td${top(r,rStl)}>${r.stl.toFixed(1)}</td><td${top(r,rDrb)}>${r.drb.toFixed(1)}</td><td${top(r,rS)}>${r.s40.toFixed(1)}</td></tr>`).join("")+"</tbody>";
+}
+</script>
+
+</body></html>
