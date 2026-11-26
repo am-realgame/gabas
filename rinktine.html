@@ -63,7 +63,7 @@ a{color:inherit}
 <div class="flag"></div>
 <div class="band"><div class="in">
 <h1>Lietuva–Serbija: dvylikos žaidėjų ORtg ir DRtg</h1>
-<p class="lead">2026-27 klubų sezono reitingai (taškai per 100 valdymų). Geriausias santykis: Blaževičius ir Birutis. Maldūnas LKL +6,4, Europos taurėje puolimas silpnas, bet gynyba viena geriausių komandoje (žr. „Gynyba“).</p>
+<p class="lead">2026-27 klubų sezono reitingai (taškai per 100 valdymų). Geriausias santykis: Blaževičius ir Birutis. Maldūnas LKL −10,9 (11 rungt., įskaitant 94:123 su Žalgiriu), Europos taurėje puolimas silpnas, bet gynyba viena geriausių komandoje (žr. „Gynyba“).</p>
 <div class="meta">Rungtynės 2026-11-26, 18:30. Duomenys iki 2026-11-25. Skaičiuota pagal Dean Oliver formulę.</div>
 <div class="leg"><span><i style="background:var(--g)"></i>ORtg (puolimas, daugiau = geriau)</span><span><i style="background:var(--r)"></i>DRtg (gynyba, mažiau = geriau)</span><span><i style="border:1px dashed var(--mut);border-radius:0;width:0;height:12px"></i>lygos vidurkis</span><span>Skirtumas = ORtg − DRtg</span></div>
 <div class="chart" id="chart"></div>
@@ -102,7 +102,7 @@ a{color:inherit}
 <div>
 <h2>Patikimumas</h2>
 <p><b>LKL (≈)</b>: basketnews.com neskelbia varžovų statistikos. Varžovų taškai paimti iš turnyro lentelės (taškų skirtumo), kiti varžovų rodikliai prilyginti komandos. DRtg čia apytikslis.</p>
-<p><b>Maldūnas LKL (≈)</b>: komandos rodikliai iš basketnews.com (6 rungt. vidurkiai), Gabo eilutė 8 rungt.</p>
+<p><b>Maldūnas LKL (≈)</b>: komandos sumos iš basketnews.lt lygos lentelių, varžovų taškai iš rezultatų, Gabo eilutė, visur 11 rungt. (iki 11-22). Sutampa su Gabo puslapiu.</p>
 <p><b>Maža imtis</b>: mažiau nei 150 min. Žalgirio trijulės Eurolygos eilutės (27–49 min.) parodytos pilkai ir labai triukšmingos.</p>
 <p><b>Lygų vidurkiai</b> apytiksliai: vidutiniai komandų taškai padalinti iš tempo pagal surinktas komandas.</p>
 <p>2025-26 Ryto žaidėjams ir Sargiūnui (tada Rytas, LKL ir BCL) šaltinių su pilna statistika nerasta.</p>
@@ -122,7 +122,7 @@ const CUR=[
 ["Dovydas Giedraitis","Žalgiris","LKL",10,17.6,121.6,112.1,15.5,55.9,1],
 ["Deividas Sirvydis","Žalgiris","LKL",9,19.2,116.0,107.0,22.0,61.2,1],
 ["Ignas Brazdeikis","Unicaja","ACB",9,18.3,118.9,110.9,20.5,49.2,0],
-["Gabrielius Maldūnas","Lietkabelis","LKL",8,20.6,118.9,112.5,15.9,59.0,1],
+["Gabrielius Maldūnas","Lietkabelis","LKL",11,20.9,107.3,118.1,12.8,48.7,1],
 ["Gytis Radzevičius","Rytas","LKL",11,27.5,116.1,113.6,18.1,56.5,1],
 ["Ignas Sargiūnas","Fenerbahçe","Eurolyga",10,13.1,112.0,114.0,14.6,58.0,0],
 ["Osvaldas Olisevičius","Cantù","Italija LBA",6,29.7,114.6,122.7,22.6,61.5,0],
@@ -141,7 +141,7 @@ const PREV={
 "Osvaldas Olisevičius":["Treviso","Italija LBA",15,27.5,103.2,115.4],
 "Margiris Normantas":["Bilbao","ACB",34,20.1,99.7,114.2],
 "Gabrielius Maldūnas":["Lietkabelis","Europos taurė",18,16.8,129.1,112.1]};
-const DEF={"Marekas Blaževičius|LKL":[2.6,17.8,3.5],"Laurynas Birutis|ACB":[1.1,21.9,1.8],"Gytis Masiulis|LKL":[1.6,16.3,3.2],"Augustas Marčiulionis|LKL":[1.8,11.1,1.7],"Dovydas Giedraitis|LKL":[0.9,5.7,0.7],"Deividas Sirvydis|LKL":[2.2,11.0,1.6],"Ignas Brazdeikis|ACB":[3.0,13.7,2.7],"Gabrielius Maldūnas|LKL":[2.1,17.6,2.2],"Gytis Radzevičius|LKL":[1.4,18.6,1.2],"Ignas Sargiūnas|Eurolyga":[0.8,6.4,0.6],"Osvaldas Olisevičius|Italija LBA":[1.5,6.9,1.6],"Margiris Normantas|ACB":[1.7,5.2,1.3],"Gabrielius Maldūnas|Europos taurė":[4.1,20.3,3.4]};
+const DEF={"Marekas Blaževičius|LKL":[2.6,17.8,3.5],"Laurynas Birutis|ACB":[1.1,21.9,1.8],"Gytis Masiulis|LKL":[1.6,16.3,3.2],"Augustas Marčiulionis|LKL":[1.8,11.1,1.7],"Dovydas Giedraitis|LKL":[0.9,5.7,0.7],"Deividas Sirvydis|LKL":[2.2,11.0,1.6],"Ignas Brazdeikis|ACB":[3.0,13.7,2.7],"Gabrielius Maldūnas|LKL":[2.7,18.2,2.4],"Gytis Radzevičius|LKL":[1.4,18.6,1.2],"Ignas Sargiūnas|Eurolyga":[0.8,6.4,0.6],"Osvaldas Olisevičius|Italija LBA":[1.5,6.9,1.6],"Margiris Normantas|ACB":[1.7,5.2,1.3],"Gabrielius Maldūnas|Europos taurė":[4.1,20.3,3.4]};
 const LO=88,HI=150,pct=v=>Math.max(0,Math.min(100,(v-LO)/(HI-LO)*100));
 const sgn=x=>(x>0?"+":"")+x.toFixed(1);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -164,7 +164,7 @@ const P26=Object.entries(PREV).map(([n,v])=>[n,v[0],v[1]+" 25-26",v[2],v[3],v[4]
 document.getElementById("chart26").innerHTML=P26.map(p=>rowHtml(p,p[0].startsWith("Gabrielius")?"gabr":"")).join("");
 document.getElementById("axis26").innerHTML=document.getElementById("axis").innerHTML;
 // name, minutes 26-27, minutes 25-26, ORtg, DRtg (minutes-weighted, all competitions)
-const SUM=[["Laurynas Birutis",195,409,133.7,115.4],["Marekas Blaževičius",219,730,125.2,110.6],["Gabrielius Maldūnas",328,303,117.1,111.2],["Deividas Sirvydis",200,331,109.9,114.4],["Dovydas Giedraitis",215,249,107.1,116.7],["Osvaldas Olisevičius",178,412,106.6,117.6],["Ignas Brazdeikis",165,562,106.0,117.5],["Margiris Normantas",185,683,101.1,115.3]];
+const SUM=[["Laurynas Birutis",195,409,133.7,115.4],["Marekas Blaževičius",219,730,125.2,110.6],["Gabrielius Maldūnas",393,303,113.4,113.2],["Deividas Sirvydis",200,331,109.9,114.4],["Dovydas Giedraitis",215,249,107.1,116.7],["Osvaldas Olisevičius",178,412,106.6,117.6],["Ignas Brazdeikis",165,562,106.0,117.5],["Margiris Normantas",185,683,101.1,115.3]];
 const dR=SUM.map(r=>r[4]).sort((a,b)=>a-b);
 document.getElementById("sum").innerHTML=`<thead><tr><th>#</th><th>Žaidėjas</th><th>Min. 26-27</th><th>Min. 25-26</th><th>ORtg</th><th>DRtg</th><th>DRtg vieta</th><th>Skirt.</th></tr></thead><tbody>`+SUM.map((r,i)=>`<tr${r[0].startsWith("Gabrielius")?' class="gab"':''}><td>${i+1}</td><td class="p" style="text-align:left">${esc(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td><td class="o">${r[3].toFixed(1)}</td><td class="dd">${r[4].toFixed(1)}</td><td>${dR.indexOf(r[4])+1}</td><td class="${r[3]-r[4]>=0?"pos":"neg"}">${sgn(r[3]-r[4])}</td></tr>`).join("")+"</tbody>";
 const D=CUR.map(p=>{const k=p[0]+"|"+p[2],x=DEF[k];return {n:p[0],c:p[1],comp:p[2],ap:p[9],d:p[6],lg:LG[p[2]],rel:p[6]-LG[p[2]],stl:x[0],drb:x[1],s40:x[2]}});
